@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fushi VPN</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--fg:#000;--mut:#757575;--card:#f1f1f1;--line:#cfcfcf;--land:#e8e8e8;--hl:#bdbdbd;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--ease:cubic-bezier(.2,.8,.2,1);--acc:#ff6b8a;--ok:#3affc0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mut:#8c8c8c;--card:#121212;--line:#2c2c2c;--land:#161616;--hl:#343434;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#8c8c8c;--card:#121212;--line:#2c2c2c;--land:#161616;--hl:#343434;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Space Grotesk',system-ui,sans-serif;min-height:100vh;transition:background .4s,color .4s}
+h1,h2,.hd{font-family:'Unbounded','Space Grotesk',system-ui,sans-serif;font-weight:700;letter-spacing:-.02em}
+.wrap{max-width:440px;margin:0 auto;padding:24px 20px 120px;overflow-x:hidden}
+.tab{display:none}.tab.on{display:block;animation:up .5s var(--ease)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.sw{animation:fade .4s var(--ease)}
+svg.i{width:24px;height:24px;flex:none}
+h1{font-size:26px;margin:8px 0 18px}
+.center{text-align:center}
+.shield{width:60px;height:60px;margin:8px auto 14px;display:block;transition:transform .5s var(--ease),color .4s;color:var(--acc);will-change:transform}.on-c .shield{color:var(--ok)}
+.shield path,.shield g{transition:opacity .45s,fill-opacity .45s}
+.shield .fl{fill:currentColor;fill-opacity:0}
+.s-on .fl{fill-opacity:.14}.s-on{transform:scale(1.08)}
+.s-idle .chk,.s-busy .chk{opacity:0}.s-on .crs,.s-busy .crs{opacity:0}
+.s-busy .o{stroke-dasharray:4 4;animation:dash .8s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-16}}
+.st{font-size:22px;margin:0 0 12px}
+.pill{display:inline-block;font-family:'Space Mono',monospace;font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 16px;transition:background .3s}
+.map{margin:6px -20px 0;-webkit-mask-image:radial-gradient(ellipse at center,#000 50%,transparent 78%);mask-image:radial-gradient(ellipse at center,#000 50%,transparent 78%)}
+.map svg{width:100%;display:block}
+.cam{transform-origin:0 0;transition:transform 1.1s cubic-bezier(.65,0,.2,1);will-change:transform}
+.nt .cam{transition:none}
+.land{fill:var(--land);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill .4s}
+.water{fill:var(--bg);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke}
+.uz{fill:var(--hl)}
+.ring{fill:none;stroke:var(--acc);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:p 2.4s ease-out infinite}
+.ring.r2{animation-delay:1.2s}
+@keyframes p{from{transform:scale(1);opacity:.9}to{transform:scale(5);opacity:0}}
+.dot{fill:#fff;stroke:var(--acc);stroke-width:4}.halo{fill:url(#gl);transform-box:fill-box;transform-origin:center;animation:breath 2.4s ease-in-out infinite}@keyframes breath{50%{opacity:.55}}
+#mk-sv{opacity:0;transition:opacity .6s,transform 1.1s cubic-bezier(.65,0,.2,1)}
+.on-c #mk-sv,.go-c #mk-sv{opacity:1}
+#arc{fill:none;stroke:var(--ok);stroke-width:1.6;stroke-dasharray:1 1;stroke-dashoffset:1;filter:drop-shadow(0 0 3px var(--ok));vector-effect:non-scaling-stroke;opacity:0;transition:opacity .8s .3s}
+.go-c #arc{opacity:1;animation:draw 1.1s cubic-bezier(.65,0,.2,1) forwards}.on-c #arc{opacity:1;stroke-dashoffset:0;stroke-dasharray:.035 .035;animation:flow2 .9s linear infinite}@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}@keyframes flow2{to{stroke-dashoffset:-.07}}
+.dt{fill:var(--mut);opacity:.32}.dtu{fill:var(--acc);opacity:.95}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
+.lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 0 10px}
+.row{display:flex;align-items:center;gap:14px}
+.bolt{width:46px;height:46px;border-radius:14px;background:var(--fg);color:var(--bg);display:grid;place-items:center;flex:none;transition:transform .5s var(--ease)}
+.on-c .bolt{transform:rotate(-12deg) scale(1.08)}
+.bolt svg{width:22px;height:22px}
+.t1{font-weight:700;font-size:17px}.t2{color:var(--mut);font-size:14px;margin-top:2px}
+.btn{position:relative;overflow:hidden;width:100%;margin-top:16px;border:2px solid var(--fg);border-radius:16px;padding:16px;font:700 16px 'Space Grotesk',sans-serif;background:var(--fg);color:var(--bg);cursor:pointer;transition:background .35s,color .35s,transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.out{background:transparent;color:var(--fg)}
+.btn.busy{pointer-events:none}
+.btn.busy::after{content:"";position:absolute;top:0;left:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(128,128,128,.5),transparent);animation:sh 1s linear infinite}
+@keyframes sh{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+.tm{font-family:'Space Mono',monospace;text-align:center;color:var(--mut);margin-top:10px;height:18px;font-size:14px}
+.badge{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--fg);display:grid;place-items:center;font:700 12px 'Space Mono',monospace;flex:none;transition:background .3s,color .3s}
+.badge.s{width:22px;height:22px;font-size:8px}
+.cl{display:inline-flex;vertical-align:middle;margin-left:6px}.cl .badge{margin-left:-6px;background:var(--card)}
+.item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer;animation:fade .45s var(--ease) both;animation-delay:calc(var(--i,0)*40ms);transition:padding .3s var(--ease)}
+.item:active{padding-left:8px}
+.item .g{flex:1}.item .ping{font-family:'Space Mono',monospace;font-size:12px;color:var(--mut)}
+.item.sel .badge{background:var(--fg);color:var(--bg)}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -20px 12px;padding:0 20px;scrollbar-width:none}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:10px 16px;font:500 14px 'Space Grotesk',sans-serif;white-space:nowrap;cursor:pointer;transition:background .3s,color .3s,transform .15s}
+.chip:active{transform:scale(.94)}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.q{width:100%;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:14px;padding:13px 16px;font:400 15px 'Space Grotesk',sans-serif;margin-bottom:12px;outline:0;transition:border-color .3s}
+.q:focus{border-color:var(--fg)}
+.pi{width:46px;height:46px;border:1.5px solid var(--fg);border-radius:14px;display:grid;place-items:center;flex:none}
+.sec{font:700 12px 'Unbounded',sans-serif;letter-spacing:.08em;text-transform:uppercase;margin:26px 0 4px;color:var(--mut)}
+.tg{width:48px;height:28px;border-radius:99px;border:1.5px solid var(--fg);position:relative;flex:none;transition:background .3s}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:var(--fg);transition:transform .3s var(--ease),background .3s,width .2s}
+.tg:active::after{width:25px}
+.tg.on{background:var(--fg)}.tg.on::after{transform:translateX(20px);background:var(--bg)}.tg.on:active::after{transform:translateX(14px)}
+.seg{display:flex;border:1.5px solid var(--fg);border-radius:12px;overflow:hidden;margin:10px 0}
+.seg button{flex:1;border:0;background:transparent;color:var(--fg);padding:10px;font:500 14px 'Space Grotesk',sans-serif;cursor:pointer;transition:background .3s,color .3s}
+.seg button.on{background:var(--fg);color:var(--bg)}
+.icons{display:flex;gap:14px;margin:12px 0}
+.ic{flex:1;text-align:center;font-size:13px;cursor:pointer}
+.ic .mk{width:64px;height:64px;border-radius:20px;border:2px solid var(--line);margin:0 auto 8px;display:grid;place-items:center;transition:border-color .3s,transform .4s var(--ease)}
+.ic.on .mk{border-color:var(--fg);transform:scale(1.1)}
+.mk svg{width:30px;height:30px}
+.m0{background:var(--fg);color:var(--bg)}.m1{background:var(--bg);color:var(--fg)}
+.m2{background:repeating-linear-gradient(45deg,var(--fg) 0 4px,var(--bg) 4px 8px);color:var(--bg)}
+.m2 svg{background:var(--fg);border-radius:8px;padding:3px;width:36px;height:36px}
+.note{color:var(--mut);font-size:12px;text-align:center;margin-top:28px;line-height:1.5}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+nav div{max-width:440px;margin:0 auto;display:flex}
+nav button{flex:1;border:0;background:transparent;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:4px;font:500 12px 'Space Grotesk',sans-serif;cursor:pointer;padding:0;transition:color .3s}
+nav button .p{padding:6px 18px;border-radius:99px;display:grid;place-items:center;transition:background .35s,color .35s,padding .35s var(--ease)}
+nav button.on{color:var(--fg)}nav button.on .p{background:var(--fg);color:var(--bg);padding:6px 24px}
+nav button.on .p svg{animation:pop .5s var(--ease)}
+@keyframes pop{0%{transform:scale(.6) rotate(-20deg)}100%{transform:none}}
+.map{position:relative;overflow:hidden}
+.map::after{content:"";position:absolute;left:0;right:0;top:0;height:38%;background:linear-gradient(180deg,transparent,rgba(58,255,192,.18),transparent);opacity:0;pointer-events:none}
+.go-c .map::after{opacity:1;animation:scan 1.3s linear infinite}
+@keyframes scan{from{transform:translateY(-110%)}to{transform:translateY(300%)}}
+.go-c .ring{animation-duration:1.1s}
+.go-c .halo{animation-duration:.7s}
+.go-c #mk-me .dot{transform-box:fill-box;transform-origin:center;animation:tap .5s var(--ease) infinite alternate}
+@keyframes tap{to{transform:scale(1.3)}}
+.on-c .shield{animation:pop2 .7s var(--ease)}
+.on-c .bolt{animation:pop2 .6s var(--ease)}
+@keyframes pop2{0%{transform:scale(.55) rotate(-12deg)}60%{transform:scale(1.14) rotate(3deg)}100%{transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.demo{display:flex;align-items:center;gap:10px;margin:0 0 16px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,138,.14),rgba(58,255,192,.10));border:1px solid rgba(255,107,138,.35);font-size:13px;line-height:1.4;color:var(--fg)}
+.demo b{display:inline-block;font:700 10px 'Space Mono',monospace;letter-spacing:.08em;padding:4px 7px;border-radius:6px;background:var(--acc);color:#000;flex:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <section class="tab on" id="t-home">
+  <div class="demo"><b>DEMO</b><span>VPN hali demo versiyada. Ko'p xususiyatlari ishlamasligi mumkin yoki cheklovlar bo'lishi mumkin.</span></div>
+  <div class="center">
+   <div id="sh"></div>
+   <h2 class="st" id="stt">Himoyalanmagan</h2>
+   <span class="pill" id="loc"></span>
+  </div>
+  <div class="map" id="map">
+   <svg viewBox="0 0 360 320"><defs><radialGradient id="gl"><stop offset="0" style="stop-color:var(--acc);stop-opacity:.6"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/></radialGradient></defs>
+    <g id="world" class="cam"><g id="land"></g><path id="arc" pathLength="1" d=""/></g>
+    <g id="mk-me" class="cam"><circle class="halo" r="13"/><circle class="ring" r="8"/><circle class="ring r2" r="8"/><circle class="dot" r="7"/></g>
+    <g id="mk-sv" class="cam"><circle class="ring" r="8"/><circle fill="var(--fg)" r="6"/><circle fill="none" stroke="var(--fg)" r="12"/></g>
+   </svg>
+  </div>
+  <div class="card">
+   <p class="lbl">Bepul ulanish</p>
+   <div class="row"><div class="bolt" id="bolt"></div><div class="g"><div class="t1" id="sn"></div><div class="t2" id="ss"></div></div></div>
+   <button class="btn" id="btn">Ulanish</button>
+   <div class="tm" id="tm"></div>
+  </div>
+ </section>
+ <section class="tab" id="t-countries">
+  <h1>Davlatlar</h1>
+  <input class="q" id="q" placeholder="Davlat qidirish" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div id="clist"></div>
+ </section>
+ <section class="tab" id="t-profiles">
+  <h1>Profillar</h1>
+  <div id="plist"></div>
+ </section>
+ <section class="tab" id="t-settings">
+  <h1>Sozlamalar</h1>
+  <div id="sett"></div>
+ </section>
+</div>
+<nav><div id="nav"></div></nav>
+<script>
+var S=function(p){return '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'};
+var IC={home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>',globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',prof:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 10l3 2-3 2M13 15h4"/>',set:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',stream:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/>',game:'<path d="M6 9h12a3 3 0 013 3v3a2 2 0 01-3.5 1.3L15 14H9l-2.5 2.3A2 2 0 013 15v-3a3 3 0 013-3z"/><path d="M8 11v2M7 12h2"/>',anti:'<path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/><path d="M4 4l16 16"/>',sec:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/>',work:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3"/>',fushi:'<path d="M5 5h14L12 20z"/>'};
+/* davlat, kod, ping, teglar, lon, lat */
+var C=[["Germaniya","DE",42,"pc",10.4,51.2],["Niderlandiya","NL",48,"p",5.3,52.2],["Turkiya","TR",35,"",35,39],["AQSH","US",120,"p",-98,39],["Yaponiya","JP",150,"t",138,36],["Fransiya","FR",55,"p",2.5,46.5],["Polsha","PL",50,"p",19.5,52],["Finlyandiya","FI",60,"c",26,63],["Shveytsariya","CH",58,"ct",8.2,46.8]];
+var P=[["Streaming AQSH","Amerika Qoʻshma Shtatlari","stream",3],["Oʻyin","Eng tez davlat","game",2],["Senzuraga qarshi","Eng tez davlat (mening davlatimsiz)","anti",1],["Maksimal xavfsizlik","Secure Core orqali","sec",8],["Ish / Maktab","Eng tez davlat","work",0]];
+var PR=["Smart (avto)","WireGuard","OpenVPN","Stealth"];
+var ME={lon:64.5,lat:41.3};
+var st={real:null,on:false,busy:false,tab:'home',sel:null,f:'all',kill:false,split:false,shield:false,proto:0,icon:0,theme:'auto',t0:0};
+var cam={lon:ME.lon,lat:ME.lat,s:3.6},svPos={lon:ME.lon,lat:ME.lat},iv=null,timers=[];
+var $=function(i){return document.getElementById(i)};
+
+/* ---------- XARITA ---------- */
+var MAP={
+EUR:"-9,37 -9,43 -2,43.5 -4,48 2,51 5,53 8,54 8,57 10,57.5 12,54.5 20,54.5 21,57 24,59 30,60 24,60.5 21,61 22,65 25,65.5 21,63 17,61 19,59 16,56 13,55.5 11,59 6,58 5,62 14,67 20,70 28,71 40,67 44,68 60,69 70,73 80,73 100,77 113,74 130,71 150,71 170,70 180,68 180,65 170,60 163,58 156,51 156,58 160,61.5 142,59 135,55 140,48 131,43 129,35 126,35 125,40 121,39 122,31 120,26 110,21 106,20 108,12 105,9 101,13 100,8 103,1 98,8 98,16 94,17 92,22 88,22 80,15 77,8 73,17 72,21 67,24 62,25 57,25.5 56,27 50,30 48,30 50,26 51.5,24.5 56,26 56.5,24 59,22 52,16 43,13 39,21 35,28 34.5,31 36,36 30,36 27,37 26,40 29,41 26,41 23,40 24,38 22,37 19,41 13,45.5 16,41 18,40 16,38 12,42 9,44 5,43 3,43 0,39 -2,37 -6,36.5",
+AFR:"-17,21 -13,28 -6,36 10,37 11,33 20,31 32,31 34,28 38,20 43,12 51,12 48,5 40,-3 40,-15 35,-24 33,-27 27,-34 19,-35 14,-22 12,-6 9,3 5,5 -8,4 -13,8 -17,14",
+NAM:"-163,65 -166,62 -162,61 -158,58 -165,55 -155,58 -150,60 -141,60 -134,57 -128,51 -124,47 -124,40 -121,35 -117,32 -115,31 -112,29 -106,23 -105,20 -97,16 -92,14 -86,12 -80,9 -83,10 -84,15 -88,16 -87,21 -91,18 -96,19 -97,22 -97,27 -90,30 -83,29 -80,25 -81,31 -76,35 -74,40 -70,42 -70,44 -65,47 -56,52 -62,58 -70,62 -78,60 -80,52 -85,55 -93,58 -90,63 -82,68 -95,72 -125,70 -140,70 -155,71 -165,69",
+GRL:"-55,60 -45,60 -20,70 -20,80 -40,83 -60,82 -70,77 -58,75 -52,68",
+SAM:"-77,8 -72,12 -62,10 -52,5 -50,0 -40,-3 -35,-6 -39,-14 -41,-22 -48,-26 -53,-34 -58,-35 -62,-39 -65,-45 -68,-52 -70,-55 -74,-50 -73,-40 -71,-30 -70,-18 -76,-14 -81,-5 -80,0 -78,3",
+AUS:"114,-22 122,-18 130,-12 136,-12 137,-16 142,-11 146,-19 153,-26 150,-37 141,-38 135,-34 129,-32 115,-34 113,-26",
+GB:"-5,50 1,51 2,53 -2,56 -3,58.5 -6,58 -5,54 -3,53 -5,51.5",
+IRL:"-10,52 -6,52 -6,55 -9,54",
+HON:"130,31 132,34 135,34 140,36 142,40 141,41.5 140,38 136,36.5 132,35.5 129,33.5",
+HOK:"140,42 143,42 145,44 142,45.5",
+BOR:"109,1 117,7 119,1 116,-4 110,-3",
+SUM:"95,5 98,4 106,-3 104,-6 100,-1",
+JAV:"105,-6 114,-7 114,-8.5 106,-7.5",
+NG:"131,-1 141,-3 150,-10 141,-9 138,-8",
+MAD:"44,-25 47,-25 50,-15 49,-12 44,-17"};
+var WATER={CAS:"47,45 51,47 53,46 54,41 54,37 50,37 49,40 47,43",BLK:"28,44 34,46 38,47 41,43 38,41 32,41.5 29,41"};
+var UZB="56,41.5 56,45 58,45.5 61,44.3 62,43.3 64,43.5 66,43 68,41 71,42.2 73,40.8 71,39.8 70,40 71,38.5 67.5,37.3 66,38.5 64,38.8 62,37.7 60,41 58,41.2";
+function pts(s){return s.split(' ').map(function(p){var a=p.split(',');return (+a[0]+180)+','+(90-a[1])}).join(' ')}
+(function(){
+ var poly=function(str){return str.split(' ').map(function(p){var q=p.split(',');return [+q[0],+q[1]]})};
+ var P=[];for(var k in MAP)P.push(poly(MAP[k]));
+ var U=poly(UZB);
+ var inside=function(x,y,pg){var c=false;for(var i=0,j=pg.length-1;i<pg.length;j=i++){var xi=pg[i][0],yi=pg[i][1],xj=pg[j][0],yj=pg[j][1];if(((yi>y)!=(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))c=!c}return c};
+ var d='',du='';
+ for(var lat=-56;lat<=78;lat+=2.4)for(var lon=-168;lon<=178;lon+=2.4){
+  var hit=false;
+  for(var i=0;i<P.length&&!hit;i++)hit=inside(lon,lat,P[i]);
+  if(!hit)continue;
+  var X=(lon+180).toFixed(1),Y=(90-lat).toFixed(1);
+  var seg='M'+X+','+Y+'m-.6,0a.6,.6 0 1,0 1.2,0a.6,.6 0 1,0 -1.2,0';
+  if(inside(lon,lat,U))du+=seg;else d+=seg;
+ }
+ $('land').innerHTML='<path class="dt" d="'+d+'"/><path class="dtu" d="'+du+'"/>';
+})();
+function W(lon,lat){return [lon+180,90-lat]}
+function setCam(lon,lat,s){
+ cam={lon:lon,lat:lat,s:s};
+ var c=W(lon,lat),tx=180-c[0]*s,ty=160-c[1]*s;
+ $('world').style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';
+ var m=W(ME.lon,ME.lat),v=W(svPos.lon,svPos.lat);
+ $('mk-me').style.transform='translate('+(tx+m[0]*s)+'px,'+(ty+m[1]*s)+'px)';
+ $('mk-sv').style.transform='translate('+(tx+v[0]*s)+'px,'+(ty+v[1]*s)+'px)';
+}
+function arc(t){
+ var a=W(ME.lon,ME.lat),b=W(t.lon,t.lat),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;
+ var d=Math.hypot(a[0]-b[0],a[1]-b[1]);
+ $('arc').setAttribute('d','M'+a[0]+','+a[1]+' Q'+mx+','+(my-Math.min(40,d*.3))+' '+b[0]+','+b[1]);
+}
+function fly(t,s){
+ var d=Math.hypot(t.lon-cam.lon,t.lat-cam.lat);
+ if(d>20){
+  setCam((t.lon+cam.lon)/2,(t.lat+cam.lat)/2,Math.max(2.2,Math.min(6,260/(d*1.3))));
+  later(function(){setCam(t.lon,t.lat,s)},800);
+  return 1900;
+ }
+ setCam(t.lon,t.lat,s);return 1100;
+}
+function later(f,ms){timers.push(setTimeout(f,ms))}
+(function(){var m=$('map');m.classList.add('nt');setCam(ME.lon,ME.lat,3.6);void m.offsetWidth;m.classList.remove('nt')})();
+
+/* ---------- YORDAMCHI ---------- */
+function put(el,t){if(el.textContent!==t){el.textContent=t;el.classList.remove('sw');void el.offsetWidth;el.classList.add('sw')}}
+function badge(c,s){return '<div class="badge'+(s?' s':'')+'">'+c+'</div>'}
+function best(){return C.slice().sort(function(a,b){return a[2]-b[2]})[0]}
+function ip(c){return {DE:'94.130.18.42',NL:'185.107.56.9',TR:'176.53.216.3',US:'104.28.17.5',JP:'103.231.88.4',FR:'51.15.110.7',PL:'185.246.33.8',FI:'95.216.14.2',CH:'185.156.175.6'}[c]}
+
+/* ---------- ASOSIY HOLAT ---------- */
+function render(){
+ var on=st.on,bz=st.busy,t=$('t-home');
+ t.classList.toggle('on-c',on);
+ var sh=$('sh'),cls=on?'s-on':(bz?'s-busy':'s-idle');
+ if(!sh.firstChild)sh.innerHTML='<svg class="shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path class="fl" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path class="o" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><g class="chk"><path d="M8.5 12l2.5 2.5L16 9.5"/></g><g class="crs"><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></g></svg>';
+ sh.firstChild.setAttribute('class','shield '+cls);
+ put($('stt'),on&&!bz?'Himoyalangan':(bz?'Ulanmoqda':'Himoyalanmagan'));
+ var tg=st.target;
+ put($('loc'),on&&!bz?tg[0]+' · '+ip(tg[1]):(bz&&tg?tg[0]+' · ...':(st.real||'Aniqlanmoqda...')));
+ $('bolt').innerHTML=S(IC.bolt);
+ var s=st.sel;
+ put($('sn'),s?s[0]:'Eng tez bepul server');
+ if(s)put($('ss'),'Ping '+s[2]+' ms');
+ else if(!$('ss').querySelector('.cl'))$('ss').innerHTML='Avtomatik tanlanadi: <span class="cl">'+badge('US',1)+badge('NL',1)+badge('JP',1)+'</span> +7';
+ var b=$('btn');
+ b.classList.toggle('busy',bz);
+ b.classList.toggle('out',on&&!bz);
+ put(b,bz?(on?'Uzilmoqda':'Ulanmoqda'):(on?'Uzish':'Ulanish'));
+ $('t-countries').querySelectorAll('.item').forEach(function(e){e.classList.toggle('sel',!!(on&&tg&&e.dataset.c===tg[1]))});
+}
+function tick(){var x=Math.floor((Date.now()-st.t0)/1000),f=function(n){return(n<10?'0':'')+n};$('tm').textContent=f(Math.floor(x/3600))+':'+f(Math.floor(x/60)%60)+':'+f(x%60)}
+function splash(c){
+ var el=document.createElement('div');
+ el.style.cssText='position:fixed;left:50%;top:38%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;pointer-events:none;z-index:9;background:radial-gradient(circle,'+c+' 0%,transparent 70%)';
+ document.body.appendChild(el);
+ var k=Math.max(innerWidth,innerHeight)*2.6/24;
+ var a=el.animate([{transform:'scale(.4)',opacity:1},{transform:'scale('+k+')',opacity:0}],{duration:1100,easing:'cubic-bezier(.2,.8,.2,1)'});
+ a.onfinish=function(){el.remove()};
+ var w=document.querySelector('.wrap');
+ if(w&&w.animate)w.animate([{transform:'scale(1)'},{transform:'scale(.965)'},{transform:'scale(1)'}],{duration:620,easing:'cubic-bezier(.2,.8,.2,1)'});
+}
+function connect(c){
+ if(st.busy)return;
+ if(st.on&&st.target&&st.target[1]===c[1]){showTab('home');return}
+ timers.forEach(clearTimeout);timers=[];
+ st.target=c;svPos={lon:c[4],lat:c[5]};arc(svPos);
+ setCam(c[4],c[5],4.2);
+ st.on=true;st.busy=false;st.t0=Date.now();tick();clearInterval(iv);iv=setInterval(tick,1000);
+ render();
+}
+function disconnect(){
+ if(st.busy)return;
+ timers.forEach(clearTimeout);timers=[];
+ st.on=false;st.target=null;clearInterval(iv);$('tm').textContent='';
+ svPos={lon:ME.lon,lat:ME.lat};setCam(ME.lon,ME.lat,3.6);
+ render();
+}
+$('btn').onclick=function(){
+ if(st.busy)return;
+ if(st.on)disconnect();else connect(st.sel||best());
+};
+
+/* ---------- OYNALAR ---------- */
+function showTab(t){
+ st.tab=t;
+ ['home','countries','profiles','settings'].forEach(function(x){$('t-'+x).classList.toggle('on',x===t)});
+ navr();window.scrollTo(0,0);
+}
+function navr(){
+ var n=[['home','Bosh sahifa'],['globe','Davlatlar'],['prof','Profillar'],['set','Sozlamalar']],k=['home','countries','profiles','settings'];
+ $('nav').innerHTML=n.map(function(a,i){return '<button class="'+(st.tab===k[i]?'on':'')+'" data-go="'+k[i]+'"><span class="p">'+S(IC[a[0]])+'</span>'+a[1]+'</button>'}).join('')}
+function clist(){
+ var q=$('q').value.toLowerCase().trim();
+ $('chips').innerHTML=[['all','Hammasi'],['c','Secure Core'],['p','P2P'],['t','Tor']].map(function(a){return '<button class="chip'+(st.f===a[0]?' on':'')+'" data-f="'+a[0]+'">'+a[1]+'</button>'}).join('');
+ var l=C.filter(function(c){return(st.f==='all'||c[3].indexOf(st.f)>-1)&&c[0].toLowerCase().indexOf(q)>-1});
+ $('clist').innerHTML=l.map(function(c,i){
+  var on=st.on&&st.target&&st.target[1]===c[1];
+  return '<div class="item'+(on?' sel':'')+'" style="--i:'+i+'" data-c="'+c[1]+'">'+badge(c[1])+'<div class="g"><div class="t1">'+c[0]+'</div></div><span class="ping">'+c[2]+' ms</span></div>'}).join('')||'<p class="t2">Hech narsa topilmadi</p>'}
+$('q').oninput=clist;
+function plist(){
+ $('plist').innerHTML=P.map(function(p,i){return '<div class="item" style="--i:'+i+'" data-p="'+i+'"><div class="pi">'+S(IC[p[2]])+'</div><div class="g"><div class="t1">'+p[0]+'</div><div class="t2">'+p[1]+'</div></div></div>'}).join('')}
+function tgl(k){return '<span class="tg'+(st[k]?' on':'')+'"></span>'}
+function sett(){
+ var th=[['auto','Avto'],['light','Yorugʻ'],['dark','Qorongʻi']],ic=[['Fushi','m0'],['Qora-oq','m1'],['Retro','m2']],i=0;
+ var row=function(k,a,b){return '<div class="item" style="--i:'+(i++)+'" data-t="'+k+'"><div class="g"><div class="t1">'+a+'</div><div class="t2">'+b+'</div></div>'+tgl(k)+'</div>'};
+ $('sett').innerHTML=
+ '<div class="sec">Ulanish</div>'+
+ '<div class="item" style="--i:0" data-proto="1"><div class="g"><div class="t1">Protokol</div><div class="t2" id="pv">'+PR[st.proto]+'</div></div></div>'+
+ row('kill','Kill switch','VPN uzilsa, internet ham oʻchadi')+
+ row('split','Split tunneling','Ayrim ilovalar VPN’siz')+
+ row('shield','NetShield','Reklama va zararli saytlarni bloklash')+
+ '<div class="sec">Umumiy</div><div class="t1">Mavzu</div>'+
+ '<div class="seg">'+th.map(function(a){return '<button data-th="'+a[0]+'" class="'+(st.theme===a[0]?'on':'')+'">'+a[1]+'</button>'}).join('')+'</div>'+
+ '<div class="t1" style="margin-top:20px">Ilova belgisi</div>'+
+ '<div class="icons">'+ic.map(function(a,j){return '<div class="ic'+(st.icon===j?' on':'')+'" data-ic="'+j+'"><div class="mk '+a[1]+'">'+S(IC.fushi)+'</div>'+a[0]+'</div>'}).join('')+'</div>'+
+ '<div class="note">Fushi VPN · versiya 1.0<br>Bu namunaviy interfeys, haqiqiy tunnel Android ilovada ishlaydi.</div>'}
+function mark(sel,attr,val){document.querySelectorAll(sel).forEach(function(e){e.classList.toggle('on',e.dataset[attr]===String(val))})}
+document.addEventListener('click',function(e){
+ var el=e.target.closest('[data-go],[data-f],[data-c],[data-p],[data-t],[data-th],[data-ic],[data-proto]');if(!el)return;
+ var d=el.dataset;
+ if(d.go){showTab(d.go)}
+ else if(d.f){st.f=d.f;clist()}
+ else if(d.c){if(st.busy)return;var c=C.filter(function(x){return x[1]===d.c})[0];st.sel=c;showTab('home');connect(c)}
+ else if(d.p!==undefined){if(st.busy)return;var c2=C[P[+d.p][3]];st.sel=c2;showTab('home');connect(c2)}
+ else if(d.t){st[d.t]=!st[d.t];el.querySelector('.tg').classList.toggle('on',st[d.t])}
+ else if(d.th){st.theme=d.th;var r=document.documentElement;if(d.th==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',d.th);mark('[data-th]','th',d.th)}
+ else if(d.ic){st.icon=+d.ic;mark('[data-ic]','ic',d.ic)}
+ else if(d.proto){st.proto=(st.proto+1)%PR.length;put($('pv'),PR[st.proto])}
+});
+function loadReal(){fetch('https://ipapi.co/json/').then(function(r){return r.json()}).then(function(d){if(d&&d.ip){st.real=d.ip+' · '+(d.country_name||d.country||'');render()}}).catch(function(){if(!st.real){put($('loc'),'Internet aniqlanmadi')}})}
+navr();render();clist();plist();sett();
+loadReal();setInterval(loadReal,60000);
+</script>
+</body>
+</html>
