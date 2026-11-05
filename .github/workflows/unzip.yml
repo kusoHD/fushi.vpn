@@ -1,0 +1,15 @@
+name: Unzip
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zipni ochish
+        run: unzip -o fushi-android.zip
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "zip ochildi"
