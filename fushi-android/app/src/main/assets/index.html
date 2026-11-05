@@ -269,13 +269,14 @@ function connect(c){
  if(st.busy)return;
  if(st.on&&st.target&&st.target[1]===c[1]){showTab('home');return}
  timers.forEach(clearTimeout);timers=[];
- st.target=c;svPos={lon:c[4],lat:c[5]};arc(svPos);
+ st.target=c;if(window.Android)Android.connect('');svPos={lon:c[4],lat:c[5]};arc(svPos);
  setCam(c[4],c[5],4.2);
  st.on=true;st.busy=false;st.t0=Date.now();tick();clearInterval(iv);iv=setInterval(tick,1000);
  render();
 }
 function disconnect(){
  if(st.busy)return;
+ if(window.Android)Android.disconnect();
  timers.forEach(clearTimeout);timers=[];
  st.on=false;st.target=null;clearInterval(iv);$('tm').textContent='';
  svPos={lon:ME.lon,lat:ME.lat};setCam(ME.lon,ME.lat,3.6);

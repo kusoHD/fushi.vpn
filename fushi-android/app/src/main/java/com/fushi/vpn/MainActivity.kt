@@ -6,6 +6,7 @@ import android.net.VpnService
 import android.os.Bundle
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import android.widget.Toast
 import android.webkit.WebViewClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,12 +37,14 @@ class MainActivity : Activity() {
     inner class Bridge {
         @JavascriptInterface
         fun connect(configText: String) {
-            val prep = VpnService.prepare(this@MainActivity)
-            if (prep != null) {
-                pendingConfig = configText
-                startActivityForResult(prep, reqVpn) // tizim VPN ruxsatini so'raydi
-            } else {
-                startTunnel(configText)
+            runOnUiThread {
+                val prep = VpnService.prepare(this@MainActivity)
+                if (prep != null) {
+                    pendingConfig = configText
+                    startActivityForResult(prep, reqVpn)
+                } else {
+                    startTunnel(configText)
+                }
             }
         }
 
@@ -52,7 +55,13 @@ class MainActivity : Activity() {
     }
 
     private fun startTunnel(cfg: String) {
-        scope.launch { vpn.up(cfg) }
+        scope.launch {
+            try {
+                vpn.up(cfg)
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Konfiguratsiya xato: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     @Suppress("DEPRECATION")
